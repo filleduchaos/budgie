@@ -1,13 +1,13 @@
 /* --------------- REQUIREMENTS --------------- */
-const express = require('express'),
-	path = require('path'),
-	bodyParser = require('body-parser'),
-	session = require('express-session'),
-	firebase = require('firebase'),
-	admin = require('firebase-admin'),
-	FirebaseStore = require('connect-session-firebase')(session),
-	serviceAccount = require('./config/serviceAccountKey.json');
-	// user = require('./app/users.js');
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const firebase = require('firebase');
+const admin = require('firebase-admin');
+const FirebaseStore = require('connect-session-firebase')(session);
+const serviceAccount = require('./config/serviceAccountKey.json');
+// const user = require('./app/users.js');
 require('dotenv').load();
 
 /* --------------- FIREBASE --------------- */
