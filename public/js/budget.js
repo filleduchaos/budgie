@@ -1,6 +1,3 @@
-const firebase = require('firebase');
-const db = firebase.database();
-
 class Budget {
 	constructor(data) {
 		this.owner = data.owner;
@@ -67,28 +64,6 @@ class Budget {
 		Reflect.deleteProperty(this.expense, item);
 	}
 
-	save() {
-		return db.ref(`budgets/${this.owner}/${this.year}/${this.month}`).set(this)
-			.then(() => {
-				console.log('Successfully saved budget.');
-				return true;
-			})
-			.catch((err) => {
-				console.log(`Error saving budget: ${err}`);
-			})
-	}
-
-	remove() {
-		return db.ref(`budgets/${this.owner}/${this.year}/${this.month}`).remove()
-			.then(() => {
-				console.log('Successfully removed budget.');
-				return true;
-			})
-			.catch((err) => {
-				console.log(`Error removing budget: ${err}`);
-			})
-	}
-
 	/* ------------------ ANALYSIS METHODS ------------------ */
 	analyse() {
 		this.calculateTotals();
@@ -96,35 +71,35 @@ class Budget {
 	}
 
 	calculateTotals() {
-		this.income['total'] = {};
-		this.expense['total'] = {};
+		this.income['Total'] = {};
+		this.expense['Total'] = {};
 
 		var proposedIncome = [];
 		var actualIncome = [];
 		var proposedExpense = [];
 		var actualExpense = [];
 		for (var item in this.income) {
-			if (item !== 'total') {
+			if (item !== 'Total') {
 				proposedIncome.push(this.income[item]['proposed']);
 				actualIncome.push(this.income[item]['actual']);
 			}
 		}
 		for (var item in this.expense) {
-			if (item !== 'total') {
+			if (item !== 'Total') {
 				proposedExpense.push(this.expense[item]['proposed']);
 				actualExpense.push(this.expense[item]['actual']);
 			}
 		}
-		this.income['total']['proposed'] = proposedIncome.reduce((total, num) => {
+		this.income['Total']['proposed'] = proposedIncome.reduce((total, num) => {
 			return total + num;
 		});
-		this.income['total']['actual'] = actualIncome.reduce((total, num) => {
+		this.income['Total']['actual'] = actualIncome.reduce((total, num) => {
 			return total + num;
 		});
-		this.expense['total']['proposed'] = proposedExpense.reduce((total, num) => {
+		this.expense['Total']['proposed'] = proposedExpense.reduce((total, num) => {
 			return total + num;
 		});
-		this.expense['total']['actual'] = actualExpense.reduce((total, num) => {
+		this.expense['Total']['actual'] = actualExpense.reduce((total, num) => {
 			return total + num;
 		});
 	}
@@ -201,5 +176,3 @@ class Budget {
 		return budget;
 	}
 }
-
-module.exports = Budget;

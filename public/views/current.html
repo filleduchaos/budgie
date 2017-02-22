@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Budgie - A Budget Analysis App</title>
+		<meta charset="UTF-8"/>
+		<!--Let browser know website is optimized for mobile-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<!--Import Google Icon Font-->
+		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import materialize.css-->
+		<link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    </head>
+
+	<body ng-app="myApp" ng-controller="myCtrl">
+		<div class="card" ng-show="!isCurrentBudgetSet">
+			<div class="card-content cyan-text center-align text-darken-2">
+				<h5>You have no budget for this month. Let Budgie propose one for you.</h5>
+				<a class="waves-effect waves-light btn cyan darken-2" ng-click="proposeCurrentBudget()">Propose Budget</a>
+				<h5>Or create one manually:</h5>
+				<div style="padding:40px;">
+					<h5>Income:</h5>
+					<form class="col s10">
+						<div class="row">
+							<div class="input-field col s5">
+								<input id="new_income_item" type="text" ng-model="newIncomeItem" class="validate">
+								<label for="new_income-item" class="left-align">Item</label>
+							</div>
+							<div class="input-field col s3">
+								<input id="new_income_value" type="number" ng-model="newIncomeValue" class="validate">
+								<label for="new_income_value" class="left-align">Proposed income</label>
+							</div>
+							<div class="input-field col s3">
+								<select ng-model="newIncomeRepeat">
+									<option value="" disabled selected>Repeat</option>
+									<option value="true">Repeat each month</option>
+									<option value="false">Don't repeat</option>
+								</select>
+								<label>Repeat</label>
+							</div>
+							<div class="col s1" style="padding-top:20px;">
+								<a class="waves-effect waves-light btn cyan darken-2" ng-click="currentBudget.addIncome(newIncomeItem, newIncomeValue, newIncomeRepeat)">Add Income</a>
+							</div>
+						</div>
+					</form>
+					<table class="striped responsive">
+						<thead>
+							<tr>
+								<td data-field="income">Source</td>
+								<td data-field="proposed">Proposed inflow</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="(name, item) in currentBudget.income">
+								<td>{{ name }}</td>
+								<td>{{ item.proposed }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div style="padding:40px;">
+					<h5 class="heading">Expense:</h5>
+					<form class="col s10">
+						<div class="row">
+							<div class="input-field col s4">
+								<input id="new_expense_item" type="text" ng-model="newExpenseItem" class="validate">
+								<label for="new_expense-item" class="left-align">Item</label>
+							</div>
+							<div class="input-field col s3">
+								<input id="new_expense_value" type="number" ng-model="newExpenseValue" class="validate">
+								<label for="new_expense_value" class="left-align">Proposed expense</label>
+							</div>
+							<div class="input-field col s2">
+								<select ng-model="newExpenseRepeat">
+									<option value="" disabled selected>Repeat</option>
+									<option value="true">Repeat each month</option>
+									<option value="false">Don't repeat</option>
+								</select>
+								<label>Repeat</label>
+							</div>
+							<div class="input-field col s2">
+								<select ng-model="newExpensePriority">
+									<option value="" disabled selected>Priority</option>
+									<option value="High">High</option>
+									<option value="Medium">Medium</option>
+									<option value="Low">Low</option>
+								</select>
+								<label>Priority</label>
+							</div>
+							<div class="col s1" style="padding-top:20px;">
+								<a class="waves-effect waves-light btn cyan darken-2" ng-click="currentBudget.addExpense(newExpenseItem, newExpenseValue, newExpenseRepeat, newExpensePriority)">Add Expense</a>
+							</div>
+						</div>
+					</form>
+					<table class="striped responsive">
+						<thead>
+							<tr>
+								<td data-field="expense">Item</td>
+								<td data-field="proposed">Proposed expenditure</td>
+								<td data-field="priority">Priority</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="(name, item) in currentBudget.expense">
+								<td>{{ name }}</td>
+								<td>{{ item.proposed }}</td>
+								<td>{{ item.priority }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div style="padding:20px;">
+					<a class="waves-effect waves-light btn cyan darken-2" ng-click="saveCurrentBudget()">Add Budget</a>
+				</div>
+			</div>
+		</div>
+		<div class="card" ng-show="isCurrentBudgetSet">
+			<div class="card-content center-align cyan-text text-darken-2">
+				<h5 class="heading">Budget for {{ currentBudget.month + " " + currentBudget.year }}</h5>
+				<h5 class="heading">Income:</h5>
+				<table class="striped responsive">
+					<thead>
+						<tr>
+							<td data-field="income">Source</td>
+							<td data-field="proposed">Proposed inflow</td>
+							<td data-field="actual">Actual inflow</td>
+							<td data-field="variance">Variance</td>
+							<td data-field="varcent">Variance percentage</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="(name, item) in currentBudget.income">
+							<td>{{ name }}</td>
+							<td>{{ item.proposed | currency}}</td>
+							<td>{{ (item.actual | currency) || "-" }}</td>
+							<td>{{ (item.variance | currency) || "-" }}</td>
+							<td>{{ item.varcent + "%" || "-" }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<h5 class="heading">Expense:</h5>
+				<table class="striped responsive">
+					<thead>
+						<tr>
+							<td data-field="expense">Item</td>
+							<td data-field="proposed">Proposed expenditure</td>
+							<td data-field="actual">Actual expenditure</td>
+							<td data-field="variance">Variance</td>
+							<td data-field="varcent">Variance percentage</td>
+							<td data-field="priority">Priority</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="(name, item) in currentBudget.expense">
+							<td>{{ name }}</td>
+							<td>{{ item.proposed | currency }}</td>
+							<td>{{ (item.actual | currency) || "-" }}</td>
+							<td>{{ (item.variance | currency) || "-" }}</td>
+							<td>{{ item.varcent + "%" || "-" }}</td>
+							<td>{{ item.priority || "-" }}</td>
+						</tr>
+					</tbody>
+				<table>
+				<h5 class="heading">Log Expenses:</h5>
+				<form class="col s10">
+					<div class="row">
+						<div class="input-field col s5">
+							<input id="expense_item" type="text" ng-model="expenseItem" class="validate">
+							<label for="expense_item" class="left-align">Item</label>
+						</div>
+						<div class="input-field col s5">
+							<input id="expense_value" type="number" ng-model="expenseValue" class="validate">
+							<label for="expense_value" class="left-align">Expenditure</label>
+						</div>
+						<div class="col s2" style="padding-top:20px;">
+							<a class="waves-effect waves-light btn cyan darken-2" ng-click="currentBudget.setActualExpense(expenseItem, expenseValue)">Update Expense</a>
+						</div>
+					</div>
+				</form>
+				<a class="waves-effect waves-light btn cyan darken-2" ng-click="saveCurrentBudget()">Save Budget</a>
+			</div>
+		</div>
+		<!--Import jQuery before materialize.js-->
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+		<script type="text/javascript" src="../js/materialize.min.js"></script>
+		<script src="../js/budget.js"></script>
+		<script src="../js/current.js"></script>
+	</body>
+</html>

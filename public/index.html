@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Budgie - A Budget Analysis App</title>
+		<meta charset="UTF-8"/>
+		<!--Let browser know website is optimized for mobile-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<!--Import Google Icon Font-->
+		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import materialize.css-->
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    </head>
+
+	<body style="background-color:#0097A7;">
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<div class="card">
+						<nav>
+							<div class="nav-wrapper white">
+								<a class="brand-logo cyan-text text-darken-2" style="padding-left:40px;">Budgie</a>
+								<ul id="auth-nav" class="right hide-on-med-and-down">
+									<li><a class="waves-effect waves-light btn cyan darken-2" href="#signup">Sign Up</a></li>
+									<li><a class="waves-effect waves-light btn cyan darken-2" href="#login">Log In</a></li>
+								</ul>
+							</div>
+						</nav>
+					</div>
+					<div id="signup" class="modal">
+						<div class="modal-content">
+							<form action="/signup" method="POST">
+								<div class="input-field">
+						        	<input id="displayName" name="displayName" type="text">
+						        	<label for="displayName">Name</label>
+						        </div>
+						        <div class="input-field">
+						        	<input id="uid" name="uid" type="text">
+						        	<label for="uid">Username</label>
+						        </div>
+						        <div class="input-field">
+						        	<input id="email" name="email" type="email" class="validate">
+						        	<label for="email">Email</label>
+						        </div>
+						        <div class="input-field">
+						        	<input id="password" name="password" type="password" class="validate">
+						        	<label for="password">Password</label>
+						        </div>
+								<!-- <a class="waves-effect waves-light btn cyan darken-2" type="submit">Sign Up</a> -->
+								<input class="waves-effect waves-light btn cyan darken-2" type="submit" value="Sign Up"/>
+							</form>
+						</div>
+					</div>
+					<div id="login" class="modal">
+						<div class="modal-content">
+							<form action="/login" method="POST">
+						        <div class="input-field">
+						        	<input id="email" name="email" type="email" class="validate">
+						        	<label for="email">Email</label>
+						        </div>
+						        <div class="input-field">
+						        	<input id="password" name="password" type="password" class="validate">
+						        	<label for="password">Password</label>
+						        </div>
+								<input class="waves-effect waves-light btn cyan darken-2" type="submit" value="Log In"/>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col s12">
+					<div class="card horizontal valign-wrapper">
+						<div class="card-image">
+							<img class="valign" src="img/logo.png"/>
+						</div>
+						<div class="card-stacked">
+							<div class="card-content cyan-text text-darken-2">
+								<h2 class="header">Let Budgie handle your budgets</h2>
+								<ul>
+									<li><h5>Propose a budget for each month</h5></li>
+									<li><h5>Track your actual income and expenses</h5></li>
+									<li><h5>View analyses of your budget over time</h5></li>
+									<li><h5>Let Budgie propose a budget for you based on your spending patterns</h5></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Import jQuery before materialize.js-->
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+		<script type="text/javascript" src="js/materialize.min.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	</body>
+</html>
+        
